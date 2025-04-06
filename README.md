@@ -4,11 +4,14 @@ This repository contains the implementation of the paper titled "Domain Adaptati
 <ul>
   <li><span style="font-size: 18px;">Linear Kernel Maximum Mean Discrepancy (MMD)</span></li>
   <li><span style="font-size: 18px;">Deep Feature Clustering for Pseudo-Label Denoising</span></li>
-  <li><span style="font-size: 18px;">End-to-End Training</span></li>
+  <li><span style="font-size: 18px;">End-to-End Training&Pure deep learning approach without handcrafted features</span></li>
 </ul>
 
 <h2>📂 Dataset</h2>
-<p>The experiments are conducted on the <strong>SAMPLE dataset</strong>, which contains paired synthetic and real SAR images of 10 military vehicle targets.</p>
+<p>The experiments are conducted on the SAMPLE dataset, which contains paired synthetic and real SAR images of 10 military vehicle targets. The dataset is divided into three evaluation scenarios:<p>
+<p>Scenario I: Training on synthetic data (14-17°) and testing on real data (14-17°).<p>
+<p>Scenario II: Training on synthetic data (14-16°) and testing on real data (17°).<p>
+<p>Scenario III: Training on limited real data (14-16°) and testing on real data (17°).<p>
 
 <h2>📊 Results</h2>
 <p>The proposed method achieves the following results:</p>
