@@ -22,3 +22,4 @@ This repository contains the implementation of the paper titled "Domain Adaptati
 </ul>
 
 <h2>🛠️ Code Structure</h2>
+<p>We are doing the final review and will release it soon.<p>
