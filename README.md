@@ -4,7 +4,7 @@ This repository contains the implementation of the paper titled "Domain Adaptati
 <ul>
   <li><span style="font-size: 18px;">Linear Kernel Maximum Mean Discrepancy (MMD)</span></li>
   <li><span style="font-size: 18px;">Deep Feature Clustering for Pseudo-Label Denoising</span></li>
-  <li><span style="font-size: 18px;">End-to-End Training&Pure deep learning approach without handcrafted features</span></li>
+  <li><span style="font-size: 18px;">End-to-End Pseudo-Label Self Training&Pure deep learning approach without handcrafted features</span></li>
 </ul>
 
 <h2>📂 Dataset</h2>
