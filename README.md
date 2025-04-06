@@ -1,31 +1,18 @@
-# Domain Adaptation with Deep Feature Clustering for Pseudo-Label Denoising in Cross-Source SAR Image Classification
-
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![PyTorch 1.10+](https://img.shields.io/badge/pytorch-1.10+-red.svg)](https://pytorch.org/)
-
-Official implementation of our SAR-ATR method that achieves state-of-the-art performance on the SAMPLE dataset through innovative domain adaptation and pseudo-label denoising techniques.
-
-## Key Features
-
-- **Linear-kernel MMD Domain Adaptation**: Novel domain adaptation framework using linear-kernel Maximum Mean Discrepancy (MMD) for effective cross-domain feature alignment
-- **Deep Feature Clustering**: t-SNE-based clustering of adapter layer features for robust pseudo-label denoising
-- **End-to-End Training**: Single-stage training pipeline without complex multi-phase optimization
-- **SOTA Performance**: Achieves 97.87% accuracy on Scenario I (standard cross-domain) and 98.54% on Scenario III (generalization) of SAMPLE dataset
-
-## Method Overview
-
-Our approach addresses cross-source SAR image classification through:
-1. **Domain-Invariant Feature Learning**: Linear-kernel MMD loss minimizes distribution discrepancy between simulated and measured SAR images
-2. **Adapter FC Layer**: 512×256 dimensional bottleneck layer that learns domain-shared representations
-3. **Progressive Pseudo-Label Refinement**: Multi-stage denoising via t-SNE clustering of deep features with dynamic thresholding
-
-![Framework](assets/framework.png) *(Architecture diagram from paper)*
-
-## Installation
-
-```bash
-git clone https://github.com/TheGreatTreatsby/SAR-Domain-Adaptation.git
-cd SAR-Domain-Adaptation
-conda env create -f environment.yml
-conda activate sar-da
+#🚀 Domain Adaptation with Deep Feature Clustering for Pseudo-Label Denoising in Cross-Source SAR Image Classification
+This repository contains the implementation of the paper titled "Domain Adaptation with Deep Feature Clustering for Pseudo-Label Denoising in Cross-Source SAR Image Classification". The proposed method addresses the domain shift problem in Synthetic Aperture Radar (SAR) image classification by combining domain adaptation with deep feature clustering for pseudo-label denoising. The approach achieves state-of-the-art (SOTA) performance on the SAMPLE dataset across three challenging evaluation scenarios.
+#🔍 Key Contributions
+Linear Kernel Maximum Mean Discrepancy (MMD): A domain adaptation framework that minimizes the distribution gap between synthetic and real SAR images using a linear kernel MMD loss, eliminating the need for complex data augmentation or multi-stage training.
+Deep Feature Clustering for Pseudo-Label Denoising: A novel pseudo-label denoising strategy based on deep feature clustering, which leverages t-SNE for dimensionality reduction and clustering to filter out noisy pseudo-labels.
+End-to-End Training: The proposed method is fully data-driven and does not rely on handcrafted features or noise models, achieving superior performance in cross-domain SAR image classification tasks.
+#📂 Dataset
+The experiments are conducted on the SAMPLE dataset, which contains paired synthetic and real SAR images of 10 military vehicle targets. The dataset is divided into three evaluation scenarios:
+Scenario I: Training on synthetic data (14-17°) and testing on real data (14-17°).
+Scenario II: Training on synthetic data (14-16°) and testing on real data (17°).
+Scenario III: Training on limited real data (14-16°) and testing on real data (17°).
+#📊 Results
+The proposed method achieves the following results:
+Scenario I: 97.87% accuracy.
+Scenario II: 97.69% accuracy.
+Scenario III: 98.54% accuracy.
+These results outperform existing methods, demonstrating the effectiveness of the proposed approach in addressing domain shift and pseudo-label noise.
+#🛠️ Code Structure
