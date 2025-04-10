@@ -117,7 +117,6 @@ def create_combined_dataloader(dataset1, num_samples_to_extract, batch_size=128,
 
     # 划分 dataset1 的完整 batch 和剩余样本
     full_batch_indices = indices[:num_full_batches * batch_size]
-    remaining_indices = indices[num_full_batches * batch_size:]
 
     # 从完整 batch 中随机抽取样本，用于填充 dataset2 的前部分
     dataset2_indices_part1 = random.sample(full_batch_indices, supply_samples)
@@ -199,32 +198,19 @@ def MMD_loss_gaussian(X, Y, sigma=1.0):
 
 # MMD损失函数（线性核）
 def MMD_loss(source, target):
-    batch_size_X = source.size(0)
-    batch_size_Y = target.size(0)
-
     source = source.view(source.size(0), -1)
-    # norms = torch.norm(source, p=2, dim=1, keepdim=True)
-    # source = source / (norms)
     target = target.view(target.size(0), -1)
-    # norms = torch.norm(target, p=2, dim=1, keepdim=True)
-    # target = target/ (norms)
     # 计算源域样本对的内积矩阵
     source_source = torch.mm(source, source.t())# (batch_size, batch_size)
-    source_source_diagonal = source_source.trace()
-
     source_source=source_source.mean()
     # 计算目标域样本对的内积矩阵
     target_target = torch.mm(target, target.t()) # (batch_size, batch_size)
-    target_target_diagonal = target_target.trace()
-
     target_target = target_target.mean()
     # 计算源域和目标域样本对的内积矩阵
     source_target = torch.mm(source, target.t()).mean()   # (batch_size, batch_size)
-    # print(source_source_diagonal,source_source_non_diagonal,target_target_diagonal,target_target_non_diagonal,source_target)
-    # mmd = torch.abs(source_source+target_target-2*source_target)
     mmd = torch.exp(torch.abs(source_source + target_target - 2 * source_target))-1
     # mmd = torch.exp(source_source_non_diagonal + target_target_non_diagonal - 2 * source_target)
-    # mmd = source_source + target_target - 2 * source_target
+    # mmd = torch.abs(source_source+target_target-2*source_target)
     # mmd =torch.log(1 + source_source + target_target - 2 * source_target)
     return mmd, source_source, target_target, source_target
 
@@ -250,15 +236,12 @@ def MMD_loss_unbiased(source, target):
     source_target_mean = source_target.mean()  # 源域和目标域的均值
 
     # 计算 MMD 损失
-    # mmd = source_source_non_diagonal + target_target_non_diagonal - 2 * source_target_mean
     mmd = torch.abs(source_source_non_diagonal + target_target_non_diagonal - 2 * source_target_mean)
     return mmd,source_source_non_diagonal ,target_target_non_diagonal ,source_target_mean
 # 计算准确率
 def calculate_accuracy(outputs, labels):
     _, predicted = torch.max(outputs.data, 1)
     correct = (predicted == labels).sum().item()
-
-
     return 100 * correct / labels.size(0)
 
 
@@ -280,29 +263,20 @@ def train(lamada,adaptation_dim,noise_threshold=[80],kmeans=False,Scenario=2):
 
     # 场景1：加载源域和目标域数据
     if Scenario == 1:
-        source_dataset = datasets.ImageFolder(root='D:\dataset\SAR\SAMPLE_dataset_public-master\png_images\qpm\\synth',
-                                              transform=train_transform)
-        target_test_dataset = datasets.ImageFolder(
-            root='D:\dataset\SAR\SAMPLE_dataset_public-master\png_images\qpm\\real', transform=test_transform)
+        source_dataset = datasets.ImageFolder(root='D:\dataset\SAR\SAMPLE_dataset_public-master\png_images\qpm\\synth', transform=train_transform)
+        target_test_dataset = datasets.ImageFolder(root='D:\dataset\SAR\SAMPLE_dataset_public-master\png_images\qpm\\real', transform=test_transform)
         target_train_dataset = target_test_dataset
     # 场景2：加载源域和目标域数据
     if Scenario == 2:
-        source_dataset = datasets.ImageFolder(
-            root='D:\dataset\SAR\SAMPLE_dataset_public-master\png_images\qpm\\synth_elev_14_16',
-            transform=train_transform)
-        target_test_dataset = datasets.ImageFolder(
-            root='D:\dataset\SAR\SAMPLE_dataset_public-master\png_images\qpm\\real_elev_17', transform=test_transform)
+        source_dataset = datasets.ImageFolder( root='D:\dataset\SAR\SAMPLE_dataset_public-master\png_images\qpm\\synth_elev_14_16',transform=train_transform)
+        target_test_dataset = datasets.ImageFolder(root='D:\dataset\SAR\SAMPLE_dataset_public-master\png_images\qpm\\real_elev_17', transform=test_transform)
         target_train_dataset=target_test_dataset
 
     # 场景3：加载源域和目标域数据
     if Scenario == 3:
-        source_dataset = datasets.ImageFolder(root='D:\dataset\SAR\SAMPLE_dataset_public-master\png_images\qpm\\synth',
-                                              transform=train_transform)
-        target_train_dataset = datasets.ImageFolder(
-            root='D:\dataset\SAR\SAMPLE_dataset_public-master\png_images\qpm\\real_elev_14_16', transform=test_transform)
-
-        target_test_dataset = datasets.ImageFolder(
-            root='D:\dataset\SAR\SAMPLE_dataset_public-master\png_images\qpm\\real_elev_17', transform=test_transform)
+        source_dataset = datasets.ImageFolder(root='D:\dataset\SAR\SAMPLE_dataset_public-master\png_images\qpm\\synth',transform=train_transform)
+        target_train_dataset = datasets.ImageFolder(root='D:\dataset\SAR\SAMPLE_dataset_public-master\png_images\qpm\\real_elev_14_16', transform=test_transform)
+        target_test_dataset = datasets.ImageFolder(root='D:\dataset\SAR\SAMPLE_dataset_public-master\png_images\qpm\\real_elev_17', transform=test_transform)
 
     # 创建 DataLoader
     source_loader = DataLoader(source_dataset, batch_size=128, shuffle=True, num_workers=0)
@@ -320,7 +294,6 @@ def train(lamada,adaptation_dim,noise_threshold=[80],kmeans=False,Scenario=2):
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
-    # print(model)
 
     # 创建以时间日期命名的文件夹
     current_time = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
@@ -329,7 +302,6 @@ def train(lamada,adaptation_dim,noise_threshold=[80],kmeans=False,Scenario=2):
 
     # 训练循环
     num_epochs = 240
-    best_accuracy = 0.0
     train_losses = []  # 总损失
     cls_losses = []    # 分类损失
     mmd_losses = []    # MMD 损失
@@ -347,8 +319,6 @@ def train(lamada,adaptation_dim,noise_threshold=[80],kmeans=False,Scenario=2):
         running_target_target = 0.0
         running_source_target = 0.0
         running_accuracy = 0.0
-        # target_train_loader=create_combined_dataloader(target_train_dataset, 806)
-        # source_loader=create_combined_dataloader(source_dataset, 640)
         batch_num=0
         total_train=0
         for (source_inputs, source_labels), (target_inputs, target_labels) in zip(source_loader, target_train_loader):
@@ -358,19 +328,11 @@ def train(lamada,adaptation_dim,noise_threshold=[80],kmeans=False,Scenario=2):
             source_inputs = source_inputs.to(device)
             source_labels = source_labels.to(device)
             target_inputs = target_inputs.to(device)
-            # print(source_labels.shape)
-            # print(target_labels.shape)
-
-
-
             source_outputs, source_adapt = model(source_inputs)
             _, target_adapt = model(target_inputs)
 
             cls_loss = criterion(source_outputs, source_labels)
-            # if epoch<60:
-            #     mmd_loss, source_source, target_target, source_target = MMD_loss(source_adapt, target_adapt)
-            # else:
-            #     mmd_loss, source_source, target_target, source_target = MMD_loss_unbiased(source_adapt, target_adapt)
+
             mmd_loss, source_source, target_target, source_target = MMD_loss(source_adapt, target_adapt)
             # mmd_loss, source_source, target_target, source_target = MMD_loss_unbiased(source_adapt, target_adapt)
             # mmd_loss, source_source, target_target, source_target  = MMD_loss_gaussian(source_adapt, target_adapt)
@@ -417,7 +379,7 @@ def train(lamada,adaptation_dim,noise_threshold=[80],kmeans=False,Scenario=2):
                   f'Accuracy: {epoch_accuracy:.2f}%')
 
         if epoch+1 in [240] :
-            noise_threshold+=15
+
             lambda_mmd*=1
             print('noise_threshold',noise_threshold)
             print('lambda_mmd', lambda_mmd)
@@ -468,7 +430,7 @@ def train(lamada,adaptation_dim,noise_threshold=[80],kmeans=False,Scenario=2):
             target_features_2d = tsne.fit_transform(target_features.numpy())
             # 对每类进行 K-Means 聚类
             if kmeans:
-                kmeans = KMeans(n_clusters=1)  # 每类只有一个聚类中心
+                kmeans = KMeans(n_clusters=1)  # 每类只有一个聚类中心,等价于质心计算
             # 计算每类的聚类中心
             class_centers = []
             for i in range(10):
@@ -505,17 +467,11 @@ def train(lamada,adaptation_dim,noise_threshold=[80],kmeans=False,Scenario=2):
             print('伪标签正确率',np.sum(np.array(selected_pseudo_labels) == np.array(selected_target_labels))/len(selected_pseudo_labels))
 
             # 构建新的数据集
-
             new_dataset = CustomDataset(selected_image_paths, selected_pseudo_labels.tolist(), transform=train_transform)
             combined_dataset = ConcatDataset([source_dataset, new_dataset])
-
             combined_loader = DataLoader(combined_dataset, batch_size=128, shuffle=True, num_workers=0)
-
             # 替换原来的源域 DataLoader
             source_loader = combined_loader
-
-
-
             # 合并特征和标签
             all_features = torch.cat([source_features, target_features], dim=0)
             all_labels = torch.cat([source_labels.cpu(), target_labels.cpu()], dim=0)
@@ -597,33 +553,9 @@ def train(lamada,adaptation_dim,noise_threshold=[80],kmeans=False,Scenario=2):
 
 
 if __name__ == '__main__':
-    # 1.lamda=0.25 niose=0.4 scrath  dropout=0 acc 90.13977695167283
-    # 2.lamda=0.25 niose=0.0 scrath  dropout=0 acc 95.48698884758365
-    # 3.NO MMD niose=0.0 scrath  dropout=0 acc 59.50929368029739
-    # 4.NO MMD niose=0.4 scrath  dropout=0.4  acc 85.99256505576209
-    # 5.NO MMD  original res18 niose=0.4 scrath  dropout=0.4  min: 86.02230483271376 max: 91.30111524163569 mean: 88.42379182156134 std: 1.523728290370647
-    # 6.lamda=0.5 niose=0.0 scrath  dropout=0 min: 94.5724907063197 max: 97.4721189591078 mean: 95.82156133828997 std: 0.9766698512221883
-    # 7.lamda=0.75 niose=0.0 scrath  dropout=0 min: 94.27509293680298 max: 97.24907063197026 mean: 95.82156133828997 std: 0.8508383346272079
-    # 8.lamda=1 niose=0.0 scrath  dropout=0 min: 95.24163568773234 max: 97.17472118959108 mean: 96.16356877323419 std: 0.6840148698884762
-    # 9.elamda=0.1 niose=0.0 scrath  dropout=0 min: 82.0817843866171 max: 97.24907063197026 mean: 94.37918215613384 std: 4.1913834596088
-    # 10.elamda=0.25 niose=0.0 scrath  dropout=0 min: 81.33828996282529 max: 98.2899628252788 mean: 95.85130111524163 std: 4.881628347675563
-    # 11.elamda=0.5 niose=0.0 scrath  dropout=0 min: 95.91078066914498 max: 98.2899628252788 mean: 97.62825278810409 std: 0.658695778640383  !!!
-    # 12.elamda=0.75 niose=0.0 scrath  dropout=0 min: 96.13382899628253 max: 98.21561338289963 mean: 97.40520446096653 std: 0.6493988618084041
-    # 13.elamda=1 niose=0.0 scrath  dropout=0 min: 96.2081784386617 max: 98.364312267658 mean: 97.30111524163569 std: 0.5524418732568013
-
-    # 场景2
-    # 1.elamda=0.5 niose=0.0 scrath  dropout=0 min: 93.69202226345084 max: 95.73283858998144 mean: 94.99072356215213 std: 0.9214387399969871 60epoch
-    # 2.elamda=0.5_0.1 niose=0.0 scrath  dropout=0, 50,100,150//70,80,90, real_extend806, min: 94.24860853432283 max: 98.33024118738405 mean: 96.34508348794063 std: 1.2447030143020041
-    # 3.elamda=0.5 niose=0.0 scrath  dropout=0, 50,100,150//70,80,90, real_extend806,min: 94.06307977736549 max: 98.33024118738405 mean: 96.97588126159556 std: 1.4300163764410494
-    # 4.elamda=0.5 niose=0.0 scrath  dropout=0, 60,120,180//70,80,90, real_extend806,min: 93.32096474953617 max: 99.44341372912801 mean: 97.06864564007421 std: 2.0789157443905677
-    # 5.elamda=0.5_0.5 niose=0.0 scrath  dropout=0, 60,120,180//70,80,90, real_extend806,min: 93.50649350649351 max: 98.88682745825604 mean: 96.73469387755102 std: 1.5190715762863616
-    # 6.elamda=0.5_0.5 niose=0.0 scrath  dropout=0,kmeans , 60,120,180//70,80,90, real_extend806,min: 90.53803339517626 max: 99.25788497217069 mean: 97.14285714285714 std: 2.5359819851342142
-
-    # 场景3
-    # 1.elamda=0.5 niose=0.0 scrath  dropout=0 min: 95.73283858998144 max: 98.88682745825604 mean: 96.93877551020407 std: 1.0371372808440604
     for lamada in [0.5]:
         for adaptation_dim in [256]:
-            for noise_threshold in [50]:
+            for noise_threshold in [0]:
                 for Scenario in [1]:
                     result = []
                     print('lamada',lamada,'adaptation_dim',adaptation_dim,'noise_threshold',noise_threshold,'start!')
