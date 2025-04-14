@@ -12,6 +12,9 @@ This repository contains the implementation of the paper titled "Domain Adaptati
 <p>Scenario I: Training on synthetic data (14-17°) and testing on real data (14-17°).<p>
 <p>Scenario II: Training on synthetic data (14-16°) and testing on real data (17°).<p>
 <p>Scenario III: Training on synthetic data (14-17°) and domain adapter with limited real data (14-16°) and testing on real data (17°).<p>
+<p>The results reported here(also in paper) do not represent the best performance, but they are extensive. <p>
+<p>In fact, due to the small number of SAMPLE data sets, even the average value of 20 results will fluctuate in a certain range. <p>
+<p>We show some result files in the ./RESULT folder.<p>
 
 
 <h2>📊 Results</h2>
