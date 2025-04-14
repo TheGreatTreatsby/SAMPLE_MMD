@@ -396,8 +396,6 @@ def train(lamada,adaptation_dim,denoise_step=[85,95],kmeans=False,stage=[80,160]
 
             # 测试目标域测试集性能
             model.eval()
-            correct = 0
-            total = 0
             with torch.no_grad():
                 for inputs, labels, paths in target_train_loader_raw:#从目标域中抽取特征
                     inputs, labels = inputs.to(device), labels.to(device)
