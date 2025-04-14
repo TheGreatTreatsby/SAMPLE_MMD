@@ -571,7 +571,7 @@ if __name__ == '__main__':
             for mode in [2, 1]:
                 for denoise_step, stage  in zip([[80, 90, 100],[90, 100], [75, 95],  ], [ [80, 160, 220],[80, 160], [80, 160], ]):
                     result = []
-                    file_disk = r'G:\python_code\Scripts\SAMPLE_resnet\Long-CLIP\SAMPLE_resnet_K\result_txt\sence3_lr'
+                    file_disk = r'xxx'
                     os.makedirs(file_disk, exist_ok=True)
                     filename = os.path.join(file_disk,f"secen3_raw_lr_lamada_{lamada}_adaptation_dim_{adaptation_dim}_denoise_step _{denoise_step}_stage {stage}_mode {mode}acc.txt")
                     print(f"lamada {lamada}, adaptation_dim {adaptation_dim}, denoise_step {denoise_step},stage {stage},start!")
