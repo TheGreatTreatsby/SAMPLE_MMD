@@ -395,8 +395,6 @@ def train(lamada,adaptation_dim,denoise_step=[85,95],kmeans=False,stage=[80,160]
 
             # 测试目标域测试集性能
             model.eval()
-            correct = 0
-            total = 0
             with torch.no_grad():
                 for inputs, labels, paths in target_train_loader_raw:#从目标域中抽取特征
                     inputs, labels = inputs.to(device), labels.to(device)
@@ -405,7 +403,6 @@ def train(lamada,adaptation_dim,denoise_step=[85,95],kmeans=False,stage=[80,160]
                     _, predicted = torch.max(outputs.data, 1)
                     target_pseudo_labels.append(predicted.cpu())
                     target_image_paths.extend(paths)  # 保存图像路径
-
                     target_labels_list.append(labels.cpu())
 
             # 提取特征并进行t-SNE可视化
