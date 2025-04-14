@@ -22,5 +22,7 @@ This repository contains the implementation of the paper titled "Domain Adaptati
   <li><span style="font-size: 16px;">Scenario III: 98.54% accuracy</span></li>
 </ul>
 
-<h2>🛠️ Code Structure</h2>
-<p>We are doing the final review and will release it soon.<p>
+<h2>🛠️ Code running</h2>
+<p>Install the code base<p>
+<p>Modify the path of the dataset<p>
+<p>Run the Scenario I(or II,III).py directly.<p>
