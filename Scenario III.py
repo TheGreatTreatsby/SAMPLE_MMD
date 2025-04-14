@@ -568,8 +568,8 @@ def train(lamada,adaptation_dim,denoise_step=[85,95],kmeans=False,stage=[80,160]
 if __name__ == '__main__':
     for lamada in [0.75]:
         for adaptation_dim in [256]:
-            for mode in [2, 1]:
-                for denoise_step, stage  in zip([[80, 90, 100],[90, 100], [75, 95],  ], [ [80, 160, 220],[80, 160], [80, 160], ]):
+            for denoise_step, stage  in zip([[80, 90, 100],[90, 100], [75, 95],  ], [ [80, 160, 220],[80, 160], [80, 160], ]):
+                for mode in [2, 1]:
                     result = []
                     file_disk = r'xxx'
                     os.makedirs(file_disk, exist_ok=True)
