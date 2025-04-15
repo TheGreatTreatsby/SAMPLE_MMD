@@ -573,7 +573,7 @@ if __name__ == '__main__':
                     result = []
                     file_disk = r'xxx'
                     os.makedirs(file_disk, exist_ok=True)
-                    filename = os.path.join(file_disk,f"secen3_raw_lr_lamada_{lamada}_adaptation_dim_{adaptation_dim}_denoise_step _{denoise_step}_stage {stage}_mode {mode}acc.txt")
+                    filename = os.path.join(file_disk,f"Scenario3_raw_lr_lamada_{lamada}_adaptation_dim_{adaptation_dim}_denoise_step _{denoise_step}_stage {stage}_mode {mode}acc.txt")
                     print(f"lamada {lamada}, adaptation_dim {adaptation_dim}, denoise_step {denoise_step},stage {stage},start!")
 
                     for i in range(20):
