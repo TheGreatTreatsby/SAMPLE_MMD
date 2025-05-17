@@ -452,6 +452,16 @@ def train(lamada,adaptation_dim,denoise_step=[85,95],kmeans=False,stage=[80,160]
             threshold = np.percentile(distances, denoise_threshold)
             selected_mask = np.array(distances) <= threshold
 
+            #按类别根据距离筛选出前N%的点
+            # distances = np.array(distances)
+            # selected_mask = np.zeros(len(distances), dtype=bool)
+            # for i in range(10):
+            #     class_mask = (target_pseudo_labels == i)
+            #     if class_mask.sum() > 0:
+            #         class_distances = distances[class_mask]
+            #         class_threshold = np.percentile(class_distances, denoise_threshold)
+            #         selected_mask[class_mask] = (class_distances <= class_threshold)
+
             # 筛选出可信的伪标签和数据
 
             selected_pseudo_labels = target_pseudo_labels[selected_mask]
