@@ -325,6 +325,7 @@ def train(lamada,adaptation_dim,denoise_step=[85,95],kmeans=False,stage=[80,160]
         target_train_loader=create_combined_dataloader(target_train_dataset, 806)
         batch_num=0
         total_train=0
+        source_loader_raw=source_loader
         for (source_inputs, source_labels), (target_inputs, target_labels,_) in zip(source_loader, target_train_loader):
             total_train += source_labels.size(0)
             batch_num+=1
@@ -408,7 +409,7 @@ def train(lamada,adaptation_dim,denoise_step=[85,95],kmeans=False,stage=[80,160]
             # 提取特征并进行t-SNE可视化
             model.eval()
             with torch.no_grad():
-                for inputs, labels in source_loader:#从源域中抽取特征
+                for inputs, labels in source_loader_raw:#从源域中抽取特征
                     inputs = inputs.to(device)
                     _, features = model(inputs)
                     source_features.append(features.cpu())
