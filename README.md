@@ -17,9 +17,9 @@ This repository contains the implementation of the paper titled "Domain Adaptati
 <h2>📊 Results</h2>
 <p>The proposed method achieves the following results:</p>
 <ul>
-  <li><span style="font-size: 16px;">Scenario I: 97.87% accuracy</span></li>
-  <li><span style="font-size: 16px;">Scenario II: 97.69% accuracy</span></li>
-  <li><span style="font-size: 16px;">Scenario III: 98.54% accuracy</span></li>
+  <li><span style="font-size: 16px;">Scenario I: 98.05% accuracy</span></li>
+  <li><span style="font-size: 16px;">Scenario II: 97.85% accuracy</span></li>
+  <li><span style="font-size: 16px;">Scenario III: 98.65% accuracy</span></li>
 </ul>
 <p>The results reported here(also in paper) do not represent the best performance, but they are extensive. <p>
 <p>In fact, due to the small number of SAMPLE data sets, even the average value of 20 results will fluctuate in a certain range. <p>
