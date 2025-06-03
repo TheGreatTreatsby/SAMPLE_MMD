@@ -1,5 +1,5 @@
-# 🚀 Domain Adaptation with Deep Feature Clustering for Pseudo-Label Denoising in Cross-Source SAR Image Classification
-This repository contains the implementation of the paper titled "Domain Adaptation with Deep Feature Clustering for Pseudo-Label Denoising in Cross-Source SAR Image Classification". The proposed method addresses the domain shift problem in Synthetic Aperture Radar (SAR) image classification by combining domain adaptation with deep feature clustering for pseudo-label denoising. The approach achieves competitive performance on the SAMPLE dataset across three challenging evaluation scenarios.
+# 🚀 Domain Adaptation with Deep Feature Clustering for Pseudo-Label Denoising in Heterogeneous SAR Image Classification
+This repository contains the implementation of the paper titled "Domain Adaptation with Deep Feature Clustering for Pseudo-Label Denoising in Heterogeneous SAR Image Classification". The proposed method addresses the domain shift problem in Synthetic Aperture Radar (SAR) image classification by combining domain adaptation with deep feature clustering for pseudo-label denoising. The approach achieves competitive performance on the SAMPLE dataset across three challenging evaluation scenarios.
 <h2>🔍 Key Contributions</h2>
 <ul>
   <li><span style="font-size: 18px;">Linear Kernel Maximum Mean Discrepancy (MMD)</span></li>
