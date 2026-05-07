@@ -123,7 +123,6 @@ class AdaptedResNet(nn.Module):
                 layer.add_module('dropout', nn.Dropout(p=dropout_rate))
         # 提取特征层（移除最后的全连接层）
         self.features = nn.Sequential(*list(base_model.children())[:-1])
-        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         # 添加适应层
         self.adaptation_layer = nn.Linear(base_model.fc.in_features, adaptation_dim)
         # 分类层
@@ -131,7 +130,6 @@ class AdaptedResNet(nn.Module):
 
     def forward(self, x):
         x = self.features(x)
-        x = self.avgpool(x)
         x = x.view(x.size(0), -1)
         x_adapt = self.adaptation_layer(x)  # 适应层输出
         x_class = self.fc(x_adapt)  # 分类输出
