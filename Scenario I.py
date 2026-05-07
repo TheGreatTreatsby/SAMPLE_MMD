@@ -469,7 +469,7 @@ def train(lamada,adaptation_dim,noise_threshold=[80],kmeans=False,Scenario=2):
             combined_dataset = ConcatDataset([source_dataset, new_dataset])
             combined_loader = DataLoader(combined_dataset, batch_size=128, shuffle=True, num_workers=0)
             # 替换原来的源域 DataLoader
-            source_loader = combined_loader
+            # source_loader = combined_loader
             # 合并特征和标签
             all_features = torch.cat([source_features, target_features], dim=0)
             all_labels = torch.cat([source_labels.cpu(), target_labels.cpu()], dim=0)
