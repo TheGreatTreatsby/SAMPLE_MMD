@@ -305,7 +305,7 @@ def train(lamada,adaptation_dim,denoise_step=[85,95],kmeans=False,stage=[80,160]
     target_target_values = []  # target_target 值
     source_target_values = []  # source_target 值
     train_accuracies = []  # 准确率
-
+    source_loader_raw=source_loader
     for epoch in range(num_epochs):
         # 更新学习率
         if scheduler:
@@ -324,7 +324,7 @@ def train(lamada,adaptation_dim,denoise_step=[85,95],kmeans=False,stage=[80,160]
         target_train_loader=create_combined_dataloader(target_train_dataset, 1345)
         batch_num=0
         total_train=0
-        source_loader_raw=source_loader
+        
         for (source_inputs, source_labels), (target_inputs, target_labels,_) in zip(source_loader, target_train_loader):
             total_train += source_labels.size(0)
             batch_num+=1
